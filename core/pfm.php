@@ -22,7 +22,7 @@ class Pfm {
  *
  * @var string
  */
-    public $version;
+    public static $version = '0.1';
 
 /**
  * Plugin options
@@ -35,8 +35,6 @@ class Pfm {
  * Constructor
  */
     public function __construct() {
-        // Setup plugin version
-        $this->version = '0.1';
 
         // Setup options
         $this->options = array(
