@@ -31,4 +31,20 @@ class Pfm {
  */
     private $options;
 
+/**
+ * Constructor
+ */
+    public function __construct() {
+        // Setup plugin version
+        $this->version = '0.1';
+
+        // Setup options
+        $this->options = array(
+            'options_page' => array(
+                'capability' => 'edit_posts',
+                'title' => __('Food Menu', 'pfm'),
+                'pages' => array(),
+            ),
+        );
+    }
 }
