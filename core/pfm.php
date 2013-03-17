@@ -29,20 +29,42 @@ class Pfm {
  *
  * @var array
  */
-    private $options;
+    public static $options = array();
 
 /**
  * Constructor
  */
     public function __construct() {
-
         // Setup options
         $this->options = array(
-            'options_page' => array(
-                'capability' => 'edit_posts',
-                'title' => __('Food Menu', 'pfm'),
-                'pages' => array(),
-            ),
+            'name' => __('Personal Food Menu', 'pmf'),
+            'admin' => array(),
+        );
+        $this->init();
+    }
+
+/**
+ * Initiate the plugin
+ *
+ * @return void
+ */
+    public function init() {
+        // Actions
+        add_action( 'admin_menu', array($this, 'admin_menu') );
+    }
+
+/**
+ * Create the menu itens on the admin
+ *
+ * @return void
+ */
+    public function admin_menu() {
+        add_utility_page(
+            $this->options['name'],
+            $this->options['name'],
+            'manage_options',
+            'pfm-dashboard',
+            array($this, 'pfm_admin')
         );
     }
 }
