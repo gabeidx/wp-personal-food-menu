@@ -38,8 +38,16 @@ class Pfm {
         // Setup options
         $this->options = array(
             'name' => __('Personal Food Menu', 'pmf'),
-            'admin' => array(),
+            'admin' => array(
+                array(
+                    'title' => __('Shortcode', 'pfm'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'pmf_shortcode',
+                    'function' => array($this, 'pmf_shortcode')
+                ),
+            ),
         );
+
         $this->init();
     }
 
@@ -59,12 +67,26 @@ class Pfm {
  * @return void
  */
     public function admin_menu() {
+        // Add top level menu item
         add_utility_page(
             $this->options['name'],
             $this->options['name'],
             'manage_options',
-            'pfm-dashboard',
-            array($this, 'pfm_admin')
+            'pfm_foods',
+            array($this, 'pfm_foods')
         );
+
+        // Add submenus
+        foreach ($this->options['admin'] as $page) {
+            add_submenu_page(
+                'pfm_foods',
+                $page['title'],
+                $page['title'],
+                $page['capability'],
+                $page['menu_slug'],
+                $page['function']
+            );
+        }
+    }
     }
 }
