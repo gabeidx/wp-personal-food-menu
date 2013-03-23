@@ -47,6 +47,12 @@ class Pfm {
             'name' => __('Personal Food Menu', 'pmf'),
             'admin' => array(
                 array(
+                    'title' => __('Categories', 'pfm'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'pfm_categories',
+                    'function' => 'pmf_categories',
+                ),
+                array(
                     'title' => __('Shortcode', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pmf_shortcode',
