@@ -61,20 +61,24 @@ class Pfm {
             ),
         );
 
-        $this->init();
+        // Actions
+        add_action( 'admin_init', array($this, 'admin_init') );
+        add_action( 'admin_menu', array($this, 'admin_menu') );
+
+        // Install
+        $this->install();
     }
 
 /**
- * Initiate the plugin
+ * Admin setup
  *
  * @return void
  */
-    public function init() {
-        // Install
-        $this->install();
+    public function admin_init() {
+        // Scripts
+        wp_enqueue_script('jquery');
 
-        // Actions
-        add_action( 'admin_menu', array($this, 'admin_menu') );
+        include_once PFM_DIR . 'core' . DS . 'admin_api.php';
 
         // Views
         $this->setup_views();

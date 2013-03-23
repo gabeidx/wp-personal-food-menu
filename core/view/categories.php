@@ -49,6 +49,13 @@ function pfm_categories() {
         <div class="icon32 icon-appearance"></div>
         <h2><?php _e('Personal Food Menu', 'pfm'); ?> &rsaquo; <?php echo _e('Categories', 'pfm'); ?></h2>
 
+        <?php if( isset($message) ) : ?>
+        <div id="message" class="updated"><p><?php echo $message; ?></p></div>
+        <?php
+                unset($message);
+            endif;
+        ?>
+
         <div id="col-container">
             <!-- Categories -->
             <div id="col-right">
@@ -113,8 +120,46 @@ function pfm_categories() {
                     </table>
                 </div>
             </div>
+            <!-- Add Category -->
+            <div id="col-left">
+                <div class="col-wrap">
+                    <h3><?php _e('Add new category'); ?></h3>
+                    <form id="pfm-add-category" action="" method="post" class="validate form-wrap">
+                        <div class="form-field form-required">
+                            <label for="name"><?php _e('Name', 'pfm'); ?></label>
+                            <input name="category_name" id="name" type="text" value="" aria-required="true">
+                            <p><?php _e('The name of the food category'); ?></p>
+                        </div>
+                        <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Add new category'); ?>"></p>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+    <script type="text/javascript">
+        jQuery('#pfm-add-category').on('submit', function(e){
+            // Remove validation class
+            jQuery(this).find('.form-invalid').removeClass('form-invalid');
+
+            // Validate inputs
+            var input = jQuery('#name');
+            if (input.val() == '') {
+                input.parent().addClass('form-invalid');
+                e.preventDefault();
+            }
+        });
+    </script>
     <?php
+}
+
+
+function pfm_save_category($category = null, $id = null) {
+    if (!$category) {
+        $message = __('Category name required');
+        return false;
+    }
+
+    echo $table;
 }
 
 ?>
