@@ -26,17 +26,22 @@ function pfm_categories() {
     // Global database class
     global $wpdb;
 
-    $table = $wpdb->prefix . 'pfm_categories';
+    // Tables
+    $table_foods = $wpdb->prefix . 'pfm_foods';
+    $table_categories = $wpdb->prefix . 'pfm_categories';
 
-
+    // Save category
+    if (isset($_POST['category_name'])) {
+        pfm_save_category($_POST['category_name']);
+    }
 
     // Fetch all the categories
     $categories = $wpdb->get_results("SELECT
-            `wp_pfm_categories`.`id` AS `id`,
-            `wp_pfm_categories`.`name` AS `name`,
-            (SELECT COUNT(*) FROM `wp_pfm_foods` WHERE `wp_pfm_foods`.`pfm_category_id` = `wp_pfm_categories`.`id` ) AS `foods`
-        FROM `wp_pfm_categories`
-        ORDER BY `wp_pfm_categories`.`name`"
+            `$table_categories`.`id` AS `id`,
+            `$table_categories`.`name` AS `name`,
+            (SELECT COUNT(*) FROM `$table_foods` WHERE `$table_foods`.`pfm_category_id` = `$table_categories`.`id` ) AS `foods`
+        FROM `$table_categories`
+        ORDER BY `$table_categories`.`name`"
     );
 
     ?>
