@@ -107,7 +107,6 @@ class Pfm {
     public function install() {
         $local_db_version = get_option( 'pfm_db_version');
         if ( !$local_db_version || self::$db_version > $local_db_version ) {
-            var_dump(self::$db_version); die();
 
             // Global database class
             global $wpdb;
@@ -124,8 +123,34 @@ class Pfm {
                 dbDelta( str_replace('\'', '', $sql) );
             }
 
+            // Insert data into tables
+            if ( !get_option( 'pfm_installed' ) ) {
+                $this->insert();
+                update_option( 'pfm_installed', TRUE );
+            }
+
             // Register the database version
             update_option( 'pfm_db_version', $wpdb->escape(self::$db_version) );
+        }
+    }
+
+/**
+ * Insert default content into the database tables
+ *
+ * @return void
+ */
+    public function insert() {
+        // Global database class
+        global $wpdb;
+
+        // Include the database inserts
+        include PFM_DIR . 'core' . DS . 'database' . DS . 'inserts.php';
+
+        // Execute statements
+        foreach ( $inserts as $table => $statements ) {
+            foreach ($statements as $statement) {
+                $wpdb->query( str_replace( array('`\'', '\'`'), '`', $wpdb->prepare( $statement, $table ) ) );
+            }
         }
     }
 }
