@@ -76,7 +76,7 @@ class Pfm {
         // Actions
         add_action( 'admin_menu', array($this, 'admin_menu') );
 
-        // Controllers
+        // Views
         $this->setup_views();
     }
 
