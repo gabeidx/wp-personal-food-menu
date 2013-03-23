@@ -16,4 +16,3 @@ define('PFM_URL', plugin_dir_url(__FILE__));
 include PFM_DIR . 'core' . DS . 'pfm.php';
 
 $pfm = new Pfm();
-?>
