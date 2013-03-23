@@ -43,11 +43,6 @@ function pfm_categories() {
     <div class="wrap">
         <div class="icon32 icon-appearance"></div>
         <h2><?php _e('Personal Food Menu', 'pfm'); ?> &rsaquo; <?php echo _e('Categories', 'pfm'); ?></h2>
-        <header>
-            <div class="icon32 icon-appearance"></div>
-            <h2><?php _e('Personal Food Menu', 'pfm'); ?> &rsaquo; <?php echo _e('Categories', 'pfm'); ?></h2>
-            <br class="clear">
-        </header>
 
         <div id="col-container">
             <!-- Categories -->
