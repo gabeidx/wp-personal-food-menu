@@ -50,7 +50,7 @@ class Pfm {
                     'title' => __('Categories', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pfm_categories',
-                    'function' => 'pmf_categories',
+                    'function' => 'pfm_categories',
                 ),
                 array(
                     'title' => __('Shortcode', 'pfm'),
@@ -75,6 +75,9 @@ class Pfm {
 
         // Actions
         add_action( 'admin_menu', array($this, 'admin_menu') );
+
+        // Controllers
+        $this->setup_views();
     }
 
 /**
@@ -103,6 +106,19 @@ class Pfm {
                 $page['function']
             );
         }
+    }
+
+/**
+ * Setup controllers
+ *
+ * @return void
+ */
+    public function setup_views() {
+        // Path to controllers folder
+        $views_path = PFM_DIR . 'core' . DS . 'view' . DS;
+
+        // Categories
+        include_once $views_path . 'categories.php';
     }
 
 /**
