@@ -64,6 +64,9 @@ class Pfm {
  * @return void
  */
     public function init() {
+        // Install
+        $this->install();
+
         // Actions
         add_action( 'admin_menu', array($this, 'admin_menu') );
     }
@@ -93,6 +96,36 @@ class Pfm {
                 $page['menu_slug'],
                 $page['function']
             );
+        }
+    }
+
+/**
+ * Install the plugin database
+ *
+ * @return void
+ */
+    public function install() {
+        $local_db_version = get_option( 'pfm_db_version');
+        if ( !$local_db_version || self::$db_version > $local_db_version ) {
+            var_dump(self::$db_version); die();
+
+            // Global database class
+            global $wpdb;
+
+            // Include the database structure
+            include PFM_DIR . 'core' . DS . 'database' . DS . 'schema.php';
+
+            // Include WP database upgrade script
+            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+            // Create the tables on the database
+            foreach ($tables as $table => $sql) {
+                $sql = $wpdb->prepare( $sql, $table );
+                dbDelta( str_replace('\'', '', $sql) );
+            }
+
+            // Register the database version
+            update_option( 'pfm_db_version', $wpdb->escape(self::$db_version) );
         }
     }
 }
