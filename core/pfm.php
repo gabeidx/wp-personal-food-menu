@@ -25,6 +25,13 @@ class Pfm {
     public static $version = '0.1';
 
 /**
+ * Plugin database version
+ *
+ * @var string
+ */
+    public static $db_version = '1.0.1';
+
+/**
  * Plugin options
  *
  * @var array
