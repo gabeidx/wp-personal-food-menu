@@ -30,8 +30,14 @@ function pfm_categories() {
     $table_foods = $wpdb->prefix . 'pfm_foods';
     $table_categories = $wpdb->prefix . 'pfm_categories';
 
-    // Save category
-    $message = pfm_save_category($_POST['category_name']);
+    if (isset($_GET['delete'])) {
+        // Delete category
+        $message = pfm_delete_category($_GET['delete']);
+    } else {
+        // Save category
+        $message = pfm_save_category($_POST['category_name']);
+    }
+
 
     // Fetch all the categories
     $categories = $wpdb->get_results("SELECT
@@ -98,7 +104,7 @@ function pfm_categories() {
                                     <strong><a class="row-title" href="#" title="Edit “<?php echo $category->name; ?>”"><?php echo $category->name; ?></a></strong><br>
                                     <div class="row-actions">
                                         <span class="inline hide-if-no-js"><a href="#" class="editinline"><?php _e('Edit'); ?></a> | </span>
-                                        <span class="delete"><a class="delete-tag" href="#"><?php _e('Delete'); ?></a></span>
+                                        <span class="delete"><a class="delete-tag" href="?page=pfm_categories&amp;delete=<?php echo $category->id; ?>"><?php _e('Delete'); ?></a></span>
                                     </div>
                                 </td>
                                 <td class="posts column-posts"><?php echo $category->foods; ?></td>
@@ -143,6 +149,13 @@ function pfm_categories() {
                 e.preventDefault();
             }
         });
+        // Confirm deletion
+        jQuery(document).on('click', '.delete-tag', function(e){
+            if (confirm('<?php _e("Are you sure you want to delete the category?"); ?>')) {
+                return true;
+            }
+            e.preventDefault();
+        });
     </script>
     <?php
 }
@@ -164,10 +177,27 @@ function pfm_save_category($category = null, $id = null) {
     }
 
     if (!$result) {
-        return $message = __('Error while saving category, please try again');
+        return __('Error while saving category, please try again');
     }
 
     return __('Category saved successfully');
+}
+
+function pfm_delete_category($id = null) {
+    if ($id) {
+        // Global database class
+        global $wpdb;
+
+        // Tables
+        $table_categories = $wpdb->prefix . 'pfm_categories';
+
+        if ($wpdb->query($wpdb->prepare("DELETE FROM $table_categories WHERE `id` = %s", $id))) {
+            return __('Category deleted successfully');
+        } else {
+            return __('Error while deleting category, please try again');
+        }
+    }
+    return false;
 }
 
 ?>
