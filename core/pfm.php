@@ -47,6 +47,12 @@ class Pfm {
             'name' => __('Personal Food Menu', 'pmf'),
             'admin' => array(
                 array(
+                    'title' => __('Categories', 'pfm'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'pfm_categories',
+                    'function' => 'pfm_categories',
+                ),
+                array(
                     'title' => __('Shortcode', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pmf_shortcode',
@@ -55,20 +61,25 @@ class Pfm {
             ),
         );
 
-        $this->init();
+        // Actions
+        add_action( 'admin_init', array($this, 'admin_init') );
+        add_action( 'admin_menu', array($this, 'admin_menu') );
+
+        // Install
+        $this->install();
     }
 
 /**
- * Initiate the plugin
+ * Admin setup
  *
  * @return void
  */
-    public function init() {
-        // Install
-        $this->install();
+    public function admin_init() {
+        // Scripts
+        wp_enqueue_script('jquery');
 
-        // Actions
-        add_action( 'admin_menu', array($this, 'admin_menu') );
+        // Views
+        $this->setup_views();
     }
 
 /**
@@ -97,6 +108,19 @@ class Pfm {
                 $page['function']
             );
         }
+    }
+
+/**
+ * Setup controllers
+ *
+ * @return void
+ */
+    public function setup_views() {
+        // Path to controllers folder
+        $views_path = PFM_DIR . 'core' . DS . 'view' . DS;
+
+        // Categories
+        include_once $views_path . 'categories.php';
     }
 
 /**
