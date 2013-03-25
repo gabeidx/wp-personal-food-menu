@@ -47,12 +47,9 @@ function pfm_categories() {
         <div class="icon32 icon-appearance"></div>
         <h2><?php _e('Personal Food Menu', 'pfm'); ?> &rsaquo; <?php echo _e('Categories', 'pfm'); ?></h2>
 
-        <?php if( isset($message) ) : ?>
+        <?php if($message) : ?>
         <div id="message" class="updated"><p><?php echo $message; ?></p></div>
-        <?php
-                unset($message);
-            endif;
-        ?>
+        <?php endif; ?>
 
         <div id="col-container">
             <!-- Categories -->
@@ -152,9 +149,7 @@ function pfm_categories() {
 
 
 function pfm_save_category($category = null, $id = null) {
-    if (!$category) {
-        return __('Category name required');
-    }
+    if (!$category) return false;
 
     // Global database class
     global $wpdb;
