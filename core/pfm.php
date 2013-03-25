@@ -78,8 +78,6 @@ class Pfm {
         // Scripts
         wp_enqueue_script('jquery');
 
-        include_once PFM_DIR . 'core' . DS . 'admin_api.php';
-
         // Views
         $this->setup_views();
     }
