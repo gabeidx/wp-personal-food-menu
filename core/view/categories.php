@@ -31,9 +31,7 @@ function pfm_categories() {
     $table_categories = $wpdb->prefix . 'pfm_categories';
 
     // Save category
-    if (isset($_POST['category_name'])) {
-        pfm_save_category($_POST['category_name']);
-    }
+    $message = pfm_save_category($_POST['category_name']);
 
     // Fetch all the categories
     $categories = $wpdb->get_results("SELECT
@@ -155,11 +153,26 @@ function pfm_categories() {
 
 function pfm_save_category($category = null, $id = null) {
     if (!$category) {
-        $message = __('Category name required');
-        return false;
+        return __('Category name required');
     }
 
-    echo $table;
+    // Global database class
+    global $wpdb;
+
+    // Tables
+    $table_categories = $wpdb->prefix . 'pfm_categories';
+
+    if ($id) {
+        $result = $wpdb->query($wpdb->prepare("UPDATE $table_categories SET `name` = %s WHERE `id` = %i", $category, $id));
+    } else {
+        $result = $wpdb->query($wpdb->prepare("INSERT INTO $table_categories VALUES (NULL, %s)", $category));
+    }
+
+    if (!$result) {
+        return $message = __('Error while saving category, please try again');
+    }
+
+    return __('Category saved successfully');
 }
 
 ?>
