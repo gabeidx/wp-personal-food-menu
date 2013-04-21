@@ -64,6 +64,7 @@ class Pfm {
         // Actions
         add_action( 'admin_init', array($this, 'admin_init') );
         add_action( 'admin_menu', array($this, 'admin_menu') );
+        add_action( 'admin_print_styles', array($this, 'admin_css'));
 
         // Install
         $this->install();
@@ -80,6 +81,16 @@ class Pfm {
 
         // Views
         $this->setup_views();
+    }
+
+/**
+ * Admin CSS
+ *
+ * @return void
+ */
+    public function admin_css() {
+        wp_register_style('pfm', plugins_url('css/pfm.css', dirname(__FILE__)), false, $this->version);
+        wp_enqueue_style('pfm');
     }
 
 /**
