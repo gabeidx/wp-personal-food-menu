@@ -92,7 +92,7 @@ class Pfm {
         add_utility_page(
             $this->options['name'],
             $this->options['name'],
-            'manage_options',
+            'activate_plugins',
             'pfm_foods',
             array($this, 'pfm_foods')
         );
