@@ -216,6 +216,12 @@ function pfm_save_category($category = null, $id = null) {
     return __('Category saved successfully');
 }
 
+/**
+ * Delete the category
+ *
+ * @param  integer $id The category Id
+ * @return string
+ */
 function pfm_delete_category($id = null) {
     if ($id) {
         // Global database class
