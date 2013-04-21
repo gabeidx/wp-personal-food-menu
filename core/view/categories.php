@@ -62,9 +62,10 @@ function pfm_categories() {
         <div class="icon32 icon-appearance"></div>
         <h2><?php _e('Personal Food Menu', 'pfm'); ?> &rsaquo; <?php echo $pageTitle; ?></h2>
 
-        <?php if( isset($message) ) : ?>
+        <?php if($message) : ?>
         <div id="message" class="updated"><p><?php echo $message; ?></p></div>
         <?php unset($message); endif; ?>
+
 
         <div id="col-container">
             <?php
@@ -127,6 +128,7 @@ function pfm_categories() {
                                     <div class="row-actions">
                                         <span class="inline hide-if-no-js"><a href="admin.php?page=pfm_categories&amp;action=edit&amp;cat=<?php echo $category->id; ?>" class="editinline"><?php _e('Edit'); ?></a> | </span>
                                         <span class="delete"><a class="delete-tag" href="admin.php?page=pfm_categories&amp;action=delete&amp;cat=<?php echo $category->id; ?>"><?php _e('Delete'); ?></a></span>
+
                                     </div>
                                 </td>
                                 <td class="posts column-posts"><?php echo $category->foods; ?></td>
@@ -209,9 +211,26 @@ function pfm_save_category($category = null, $id = null) {
         $result = $wpdb->query($wpdb->prepare("INSERT INTO $table_categories VALUES (NULL, %s)", $category));
 
     if (!$result)
-        return $message = __('Error while saving category, please try again');
+        return __('Error while saving category, please try again');
 
     return __('Category saved successfully');
+}
+
+function pfm_delete_category($id = null) {
+    if ($id) {
+        // Global database class
+        global $wpdb;
+
+        // Tables
+        $table_categories = $wpdb->prefix . 'pfm_categories';
+
+        if ($wpdb->query($wpdb->prepare("DELETE FROM $table_categories WHERE `id` = %s", $id))) {
+            return __('Category deleted successfully');
+        } else {
+            return __('Error while deleting category, please try again');
+        }
+    }
+    return false;
 }
 
 ?>
