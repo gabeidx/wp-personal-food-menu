@@ -18,7 +18,7 @@
 */
 
 /**
- * Renders the Category page on admin
+ * Categories page
  *
  * @return void
  */
@@ -27,34 +27,47 @@ function pfm_categories() {
     global $wpdb;
 
     // Tables
-    $table_foods = $wpdb->prefix . 'pfm_foods';
+    $table_foods      = $wpdb->prefix . 'pfm_foods';
     $table_categories = $wpdb->prefix . 'pfm_categories';
 
     // Save category
-    $message = pfm_save_category($_POST['category_name']);
+    if (!empty($_POST['category_name']))
+        $message = pfm_save_category($_POST['category_name'], $_POST['category_id']);
 
-    // Fetch all the categories
-    $categories = $wpdb->get_results("SELECT
-            `$table_categories`.`id` AS `id`,
-            `$table_categories`.`name` AS `name`,
-            (SELECT COUNT(*) FROM `$table_foods` WHERE `$table_foods`.`pfm_category_id` = `$table_categories`.`id` ) AS `foods`
-        FROM `$table_categories`
-        ORDER BY `$table_categories`.`name`"
-    );
+    $isEdit       = false;
+    $pageTitle    = __('Categories', 'pfm');
+    $formTitle    = __('Add new category', 'pfm');
+    $categoryName = '';
+    $categoryId   = null;
+
+    if (!empty($_GET['action']) && !empty($_GET['cat'])) {
+        $categoryId   = $_GET['cat'];
+
+        if ($_GET['action'] == 'edit') {
+            $isEdit       = true;
+            $pageTitle    = __('Edit category', 'pfm');
+            $formTitle    = __('Edit category', 'pfm');
+            $category     = $wpdb->get_results("SELECT * FROM `$table_categories` WHERE `id` = $categoryId");
+            $categoryName = $category[0]->name;
+        } else if ($_GET['action'] == 'delete') {
+
+        }
+    }
 
     ?>
     <div class="wrap">
         <div class="icon32 icon-appearance"></div>
-        <h2><?php _e('Personal Food Menu', 'pfm'); ?> &rsaquo; <?php echo _e('Categories', 'pfm'); ?></h2>
+        <h2><?php _e('Personal Food Menu', 'pfm'); ?> &rsaquo; <?php echo $pageTitle; ?></h2>
 
         <?php if( isset($message) ) : ?>
         <div id="message" class="updated"><p><?php echo $message; ?></p></div>
-        <?php
-                unset($message);
-            endif;
-        ?>
+        <?php unset($message); endif; ?>
 
         <div id="col-container">
+            <?php
+                // Show categories only if not on the edit page
+                if (!$isEdit) :
+            ?>
             <!-- Categories -->
             <div id="col-right">
                 <div class="col-wrap">
@@ -89,6 +102,14 @@ function pfm_categories() {
                         </tfoot>
                         <tbody id="the-list">
                             <?php
+                                // Fetch all the categories
+                                $categories = $wpdb->get_results("SELECT
+                                        `$table_categories`.`id` AS `id`,
+                                        `$table_categories`.`name` AS `name`,
+                                        (SELECT COUNT(*) FROM `$table_foods` WHERE `$table_foods`.`pfm_category_id` = `$table_categories`.`id` ) AS `foods`
+                                    FROM `$table_categories`
+                                    ORDER BY `$table_categories`.`name`"
+                                );
                                 $alt = false;
                                 if ( ! empty( $categories ) ) :
                                     foreach ( $categories as $category ) :
@@ -99,9 +120,9 @@ function pfm_categories() {
                                     <input type="checkbox" name="delete_categories[]" value="<?php echo $category->id; ?>" id="cb-select-<?php echo $category->id; ?>">
                                 </th>
                                 <td class="name column-name">
-                                    <strong><a class="row-title" href="#" title="Edit “<?php echo $category->name; ?>”"><?php echo $category->name; ?></a></strong><br>
+                                    <strong><a class="row-title" href="admin.php?page=pfm_categories&amp;action=edit&amp;cat=<?php echo $category->id; ?>" title="Edit “<?php echo $category->name; ?>”"><?php echo $category->name; ?></a></strong><br>
                                     <div class="row-actions">
-                                        <span class="inline hide-if-no-js"><a href="#" class="editinline"><?php _e('Edit'); ?></a> | </span>
+                                        <span class="inline hide-if-no-js"><a href="admin.php?page=pfm_categories&amp;action=edit&amp;cat=<?php echo $category->id; ?>" class="editinline"><?php _e('Edit'); ?></a> | </span>
                                         <span class="delete"><a class="delete-tag" href="#"><?php _e('Delete'); ?></a></span>
                                     </div>
                                 </td>
@@ -120,24 +141,27 @@ function pfm_categories() {
                     </table>
                 </div>
             </div>
-            <!-- Add Category -->
+            <?php endif; // ^isEdit ?>
+
+            <!-- Add/Edit Category -->
             <div id="col-left">
                 <div class="col-wrap">
-                    <h3><?php _e('Add new category'); ?></h3>
-                    <form id="pfm-add-category" action="" method="post" class="validate form-wrap">
+                    <h3><?php echo $formTitle; ?></h3>
+                    <form id="pfm-save-category" action="admin.php?page=pfm_categories" method="post" class="validate form-wrap">
                         <div class="form-field form-required">
                             <label for="name"><?php _e('Name', 'pfm'); ?></label>
-                            <input name="category_name" id="name" type="text" value="" aria-required="true">
-                            <p><?php _e('The name of the food category'); ?></p>
+                            <input type="hidden" name="category_id" value="<?php echo $categoryId; ?>">
+                            <input name="category_name" id="name" type="text" value="<?php echo $categoryName; ?>" aria-required="true">
+                            <p><?php _e('The name of the food category', 'pfm'); ?></p>
                         </div>
-                        <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Add new category'); ?>"></p>
+                        <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo $formTitle; ?>"></p>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        jQuery('#pfm-add-category').on('submit', function(e){
+        jQuery('#pfm-save-category').on('submit', function(e){
             // Remove validation class
             jQuery(this).find('.form-invalid').removeClass('form-invalid');
 
@@ -152,11 +176,16 @@ function pfm_categories() {
     <?php
 }
 
-
+/**
+ * Save the category in the database
+ *
+ * @param  string  $category The category name
+ * @param  integer $id       The category ID, for update
+ * @return string
+ */
 function pfm_save_category($category = null, $id = null) {
-    if (!$category) {
+    if (!$category)
         return __('Category name required');
-    }
 
     // Global database class
     global $wpdb;
@@ -164,15 +193,13 @@ function pfm_save_category($category = null, $id = null) {
     // Tables
     $table_categories = $wpdb->prefix . 'pfm_categories';
 
-    if ($id) {
-        $result = $wpdb->query($wpdb->prepare("UPDATE $table_categories SET `name` = %s WHERE `id` = %i", $category, $id));
-    } else {
+    if ($id !== null)
+        $result = $wpdb->query($wpdb->prepare("UPDATE $table_categories SET `name` = %s WHERE `id` = %d", array($category, $id)));
+    else
         $result = $wpdb->query($wpdb->prepare("INSERT INTO $table_categories VALUES (NULL, %s)", $category));
-    }
 
-    if (!$result) {
+    if (!$result)
         return $message = __('Error while saving category, please try again');
-    }
 
     return __('Category saved successfully');
 }
