@@ -47,6 +47,12 @@ class Pfm {
             'name' => __('Personal Food Menu', 'pmf'),
             'admin' => array(
                 array(
+                    'title' => __('Add new', 'pfm'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'pfm_add_food',
+                    'function' => 'pfm_add_food',
+                ),
+                array(
                     'title' => __('Categories', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pfm_categories',
@@ -105,7 +111,7 @@ class Pfm {
             $this->options['name'],
             'activate_plugins',
             'pfm_foods',
-            array($this, 'pfm_foods')
+            'pfm_foods'
         );
 
         // Add submenus
@@ -122,7 +128,7 @@ class Pfm {
     }
 
 /**
- * Setup controllers
+ * Setup view
  *
  * @return void
  */
@@ -130,6 +136,8 @@ class Pfm {
         // Path to controllers folder
         $views_path = PFM_DIR . 'core' . DS . 'view' . DS;
 
+        // Foods
+        include_once $views_path . 'foods.php';
         // Categories
         include_once $views_path . 'categories.php';
     }
