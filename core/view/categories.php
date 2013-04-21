@@ -50,7 +50,10 @@ function pfm_categories() {
             $category     = $wpdb->get_results("SELECT * FROM `$table_categories` WHERE `id` = $categoryId");
             $categoryName = $category[0]->name;
         } else if ($_GET['action'] == 'delete') {
-
+            if ($wpdb->query("DELETE FROM `$table_categories` WHERE `id` = $categoryId"))
+                $message = __('Category deleted successfully', 'pfm');
+            else
+                $message = __('The category was not deleted', 'pfm');
         }
     }
 
@@ -123,7 +126,7 @@ function pfm_categories() {
                                     <strong><a class="row-title" href="admin.php?page=pfm_categories&amp;action=edit&amp;cat=<?php echo $category->id; ?>" title="Edit “<?php echo $category->name; ?>”"><?php echo $category->name; ?></a></strong><br>
                                     <div class="row-actions">
                                         <span class="inline hide-if-no-js"><a href="admin.php?page=pfm_categories&amp;action=edit&amp;cat=<?php echo $category->id; ?>" class="editinline"><?php _e('Edit'); ?></a> | </span>
-                                        <span class="delete"><a class="delete-tag" href="#"><?php _e('Delete'); ?></a></span>
+                                        <span class="delete"><a class="delete-tag" href="admin.php?page=pfm_categories&amp;action=delete&amp;cat=<?php echo $category->id; ?>"><?php _e('Delete'); ?></a></span>
                                     </div>
                                 </td>
                                 <td class="posts column-posts"><?php echo $category->foods; ?></td>
@@ -172,6 +175,13 @@ function pfm_categories() {
                 e.preventDefault();
             }
         });
+
+        jQuery(document).on('click', '.delete-tag', function(e){
+            if(!confirm("<?php _e('Are you sure you want to delete the category?', 'pfm'); ?>")) {
+                e.preventDefault();
+                return false;
+            }
+        })
     </script>
     <?php
 }
