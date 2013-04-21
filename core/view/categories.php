@@ -89,10 +89,11 @@ function pfm_categories() {
                         </tfoot>
                         <tbody id="the-list">
                             <?php
+                                $alt = false;
                                 if ( ! empty( $categories ) ) :
                                     foreach ( $categories as $category ) :
                             ?>
-                            <tr>
+                            <tr class="<?php echo ($alt) ? 'alternate' : ''; ?>">
                                 <th scope="row" class="check-column">
                                     <label class="screen-reader-text" for="cb-select-<?php echo $category->id; ?>">Select <?php echo $category->name; ?></label>
                                     <input type="checkbox" name="delete_categories[]" value="<?php echo $category->id; ?>" id="cb-select-<?php echo $category->id; ?>">
@@ -107,6 +108,7 @@ function pfm_categories() {
                                 <td class="posts column-posts"><?php echo $category->foods; ?></td>
                             </tr>
                             <?php
+                                        $alt = (!$alt) ? true : false;
                                     endforeach;
                                 else :
                             ?>
