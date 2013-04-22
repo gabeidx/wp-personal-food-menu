@@ -47,23 +47,30 @@ class Pfm {
             'name' => __('Personal Food Menu', 'pmf'),
             'admin' => array(
                 array(
+                    'title' => __('Add new', 'pfm'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'pfm_add_food',
+                    'function' => 'pfm_add_food',
+                ),
+                array(
                     'title' => __('Categories', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pfm_categories',
                     'function' => 'pfm_categories',
                 ),
-                array(
-                    'title' => __('Shortcode', 'pfm'),
-                    'capability' => 'manage_options',
-                    'menu_slug' => 'pmf_shortcode',
-                    'function' => array($this, 'pmf_shortcode')
-                ),
+                // array(
+                //     'title' => __('Shortcode', 'pfm'),
+                //     'capability' => 'manage_options',
+                //     'menu_slug' => 'pmf_shortcode',
+                //     'function' => array($this, 'pmf_shortcode')
+                // ),
             ),
         );
 
         // Actions
         add_action( 'admin_init', array($this, 'admin_init') );
         add_action( 'admin_menu', array($this, 'admin_menu') );
+        add_action( 'admin_print_styles', array($this, 'admin_css'));
 
         // Install
         $this->install();
@@ -83,6 +90,16 @@ class Pfm {
     }
 
 /**
+ * Admin CSS
+ *
+ * @return void
+ */
+    public function admin_css() {
+        wp_register_style('pfm', plugins_url('css/pfm.css', dirname(__FILE__)), false, $this->version);
+        wp_enqueue_style('pfm');
+    }
+
+/**
  * Create the menu itens on the admin
  *
  * @return void
@@ -94,7 +111,7 @@ class Pfm {
             $this->options['name'],
             'activate_plugins',
             'pfm_foods',
-            array($this, 'pfm_foods')
+            'pfm_foods'
         );
 
         // Add submenus
@@ -111,7 +128,7 @@ class Pfm {
     }
 
 /**
- * Setup controllers
+ * Setup view
  *
  * @return void
  */
@@ -119,6 +136,8 @@ class Pfm {
         // Path to controllers folder
         $views_path = PFM_DIR . 'core' . DS . 'view' . DS;
 
+        // Foods
+        include_once $views_path . 'foods.php';
         // Categories
         include_once $views_path . 'categories.php';
     }
