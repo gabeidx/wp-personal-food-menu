@@ -58,12 +58,12 @@ class Pfm {
                     'menu_slug' => 'pfm_categories',
                     'function' => 'pfm_categories',
                 ),
-                array(
-                    'title' => __('Shortcode', 'pfm'),
-                    'capability' => 'manage_options',
-                    'menu_slug' => 'pmf_shortcode',
-                    'function' => array($this, 'pmf_shortcode')
-                ),
+                // array(
+                //     'title' => __('Shortcode', 'pfm'),
+                //     'capability' => 'manage_options',
+                //     'menu_slug' => 'pmf_shortcode',
+                //     'function' => array($this, 'pmf_shortcode')
+                // ),
             ),
         );
 
