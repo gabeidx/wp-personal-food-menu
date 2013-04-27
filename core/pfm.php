@@ -86,7 +86,7 @@ class Pfm {
         wp_enqueue_script('jquery');
 
         // Views
-        $this->setup_views();
+        $this->load_admin_views();
     }
 
 /**
@@ -128,11 +128,11 @@ class Pfm {
     }
 
 /**
- * Setup views
+ * Load admin views
  *
  * @return void
  */
-    public function setup_views() {
+    public function load_admin_views() {
         // Path to views folder
         $views_path = PFM_DIR . 'core' . DS . 'view' . DS;
 
