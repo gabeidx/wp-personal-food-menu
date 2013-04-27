@@ -68,12 +68,25 @@ class Pfm {
         );
 
         // Actions
+        add_action( 'init', array($this, 'init') );
         add_action( 'admin_init', array($this, 'admin_init') );
         add_action( 'admin_menu', array($this, 'admin_menu') );
         add_action( 'admin_print_styles', array($this, 'admin_css'));
 
         // Install
         $this->install();
+    }
+
+/**
+ * Plugin init
+ *
+ * @return void
+ */
+    public function init() {
+        // Load calculator
+        $this->load('calculator.php', PFM_DIR . 'core' . DS . 'view');
+        // Shortcode
+        add_shortcode( 'pfm_calculator', 'pfm_calculator' );
     }
 
 /**
@@ -213,7 +226,6 @@ class Pfm {
                 }
             }
             closedir($dir);
-
         }
 
         foreach ($files as $file) {
