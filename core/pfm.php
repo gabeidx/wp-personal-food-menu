@@ -84,7 +84,6 @@ class Pfm {
     public function admin_init() {
         // Scripts
         wp_enqueue_script('jquery');
-
         // Views
         $this->load_admin_views();
     }
@@ -133,7 +132,7 @@ class Pfm {
  * @return void
  */
     public function load_admin_views() {
-        $this->loadFiles(null, PFM_DIR . 'core' . DS . 'view' . DS . 'admin');
+        $this->load(null, PFM_DIR . 'core' . DS . 'view' . DS . 'admin');
     }
 
 /**
@@ -195,10 +194,13 @@ class Pfm {
  * Load files specified by `$files` inside the path specified by `$path`. If `$files`
  * is null, load all files inside `$path`.
  *
- * @param mixed $files
+ * `$path` must not have a trailing slash.
+ *
+ * @param mixed  $files
+ * @param string $path
  * @return void
  */
-    public function loadFiles($files = null, $path = CORE) {
+    public function load($files = null, $path = PFM_DIR) {
         if ($files && !is_array($files)) {
             $files = array($files);
         } else if ($files == null) {
