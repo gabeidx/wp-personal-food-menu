@@ -128,18 +128,20 @@ class Pfm {
     }
 
 /**
- * Setup view
+ * Setup views
  *
  * @return void
  */
     public function setup_views() {
-        // Path to controllers folder
+        // Path to views folder
         $views_path = PFM_DIR . 'core' . DS . 'view' . DS;
 
         // Foods
         include_once $views_path . 'foods.php';
         // Categories
         include_once $views_path . 'categories.php';
+        // Shortcode
+        include_once $views_path . 'shortcode.php';
     }
 
 /**
