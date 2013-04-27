@@ -134,7 +134,7 @@ class Pfm {
  */
     public function load_admin_views() {
         // Path to views folder
-        $views_path = PFM_DIR . 'core' . DS . 'view' . DS;
+        $views_path = PFM_DIR . 'core' . DS . 'view' . DS . 'admin' . DS;
 
         // Foods
         include_once $views_path . 'foods.php';
