@@ -31,3 +31,9 @@
 #submitbox .button-primary {
     width: 100%;
 }
+#shortcode-input {
+    padding: 3px 8px;
+    font-size: 1.7em;
+    line-height: 100%;
+    outline: 0;
+}

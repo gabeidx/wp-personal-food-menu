@@ -18,6 +18,20 @@
 * @license      CC BY-NC-SA 3.0 License (http://creativecommons.org/licenses/by-nc-sa/3.0/)
 */
 
-
+/**
+ * Shortcode page
+ *
+ * @return void
+ */
+function pfm_shortcode() {
+    ?>
+    <div class="wrap">
+        <div class="icon32 icon-appearance"></div>
+        <h2><?php _e('Personal Food Menu', 'pfm'); ?> &rsaquo; <?php _e('Shortcode', 'pfm'); ?></h2>
+        <p><?php _e('Copy this code and paste it into your post, page or text widget content.'); ?></p>
+        <input type="text" name="shortcode" id="shortcode-input" value="[pfm_calculator]" autofocus onkeypress="return false;">
+    </div>
+    <?php
+}
 
 ?>
