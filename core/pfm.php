@@ -58,12 +58,12 @@ class Pfm {
                     'menu_slug' => 'pfm_categories',
                     'function' => 'pfm_categories',
                 ),
-                // array(
-                //     'title' => __('Shortcode', 'pfm'),
-                //     'capability' => 'manage_options',
-                //     'menu_slug' => 'pmf_shortcode',
-                //     'function' => array($this, 'pmf_shortcode')
-                // ),
+                array(
+                    'title' => __('Shortcode', 'pfm'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'pfm_shortcode',
+                    'function' => 'pfm_shortcode',
+                ),
             ),
         );
 
@@ -128,18 +128,20 @@ class Pfm {
     }
 
 /**
- * Setup view
+ * Setup views
  *
  * @return void
  */
     public function setup_views() {
-        // Path to controllers folder
+        // Path to views folder
         $views_path = PFM_DIR . 'core' . DS . 'view' . DS;
 
         // Foods
         include_once $views_path . 'foods.php';
         // Categories
         include_once $views_path . 'categories.php';
+        // Shortcode
+        include_once $views_path . 'shortcode.php';
     }
 
 /**
