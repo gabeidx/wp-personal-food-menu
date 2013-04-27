@@ -61,8 +61,8 @@ class Pfm {
                 array(
                     'title' => __('Shortcode', 'pfm'),
                     'capability' => 'manage_options',
-                    'menu_slug' => 'pmf_shortcode',
-                    'function' => array($this, 'pmf_shortcode')
+                    'menu_slug' => 'pfm_shortcode',
+                    'function' => 'pfm_shortcode',
                 ),
             ),
         );
