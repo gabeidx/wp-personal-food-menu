@@ -86,7 +86,7 @@ class Pfm {
         wp_enqueue_script('jquery');
 
         // Views
-        $this->setup_views();
+        $this->load_admin_views();
     }
 
 /**
@@ -128,20 +128,12 @@ class Pfm {
     }
 
 /**
- * Setup views
+ * Load admin views
  *
  * @return void
  */
-    public function setup_views() {
-        // Path to views folder
-        $views_path = PFM_DIR . 'core' . DS . 'view' . DS;
-
-        // Foods
-        include_once $views_path . 'foods.php';
-        // Categories
-        include_once $views_path . 'categories.php';
-        // Shortcode
-        include_once $views_path . 'shortcode.php';
+    public function load_admin_views() {
+        $this->loadFiles(null, PFM_DIR . 'core' . DS . 'view' . DS . 'admin');
     }
 
 /**
@@ -195,6 +187,36 @@ class Pfm {
         foreach ( $inserts as $table => $statements ) {
             foreach ($statements as $statement) {
                 $wpdb->query( str_replace( array('`\'', '\'`'), '`', $wpdb->prepare( $statement, $table ) ) );
+            }
+        }
+    }
+
+/**
+ * Load files specified by `$files` inside the path specified by `$path`. If `$files`
+ * is null, load all files inside `$path`.
+ *
+ * @param mixed $files
+ * @return void
+ */
+    public function loadFiles($files = null, $path = CORE) {
+        if ($files && !is_array($files)) {
+            $files = array($files);
+        } else if ($files == null) {
+            $dir = opendir($path);
+            if ($dir) {
+                while ($file = readdir($dir)) {
+                    if ($file != '.' && $file != '..') {
+                        $files[] = $file;
+                    }
+                }
+            }
+            closedir($dir);
+
+        }
+
+        foreach ($files as $file) {
+            if (file_exists($path . DS . $file)) {
+                require_once $path . DS . $file;
             }
         }
     }
