@@ -1,0 +1,19 @@
+/* Table */
+.pfm-table tbody td,
+.pfm-table th {
+    padding: 10px;
+}
+.pfm-col-food {
+    width: 160px;
+}
+
+/* Inputs */
+.pfm-select {
+    width: 100%;
+}
+.pfm-input {
+    width: 70px;
+}
+.pfm-readonly {
+
+}
