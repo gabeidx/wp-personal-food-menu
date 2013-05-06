@@ -33,12 +33,19 @@ function pfm_calculator() {
             <tr>
                 <th class="col-food">Alimento</th>
                 <th class="col-quantity">Quantidade</th>
-                <th class="col-quantity">Carboidratos (g)</th>
-                <th class="col-quantity">Gordura (g)</th>
-                <th class="col-quantity">Kcal</th>
+                <th class="col-carbohydrates">Carboidratos (g)</th>
+                <th class="col-lipids">Gordura (g)</th>
+                <th class="col-energy_kcal">Kcal</th>
             </tr>
         </thead>
         <tfoot>
+            <tr>
+                <th class="col-food">Alimento</th>
+                <th class="col-quantity">Quantidade</th>
+                <th class="col-carbohydrates">Carboidratos (g)</th>
+                <th class="col-lipids">Gordura (g)</th>
+                <th class="col-energy_kcal">Kcal</th>
+            </tr>
             <tr>
                 <th align="right">Resultado:</th>
             </tr>
@@ -65,6 +72,9 @@ function pfm_calculator() {
                 <td class="col-quantity">
                     <input type="number" name="" id="" value="100" min="50" step="50" class="pfm-quantity-input"> (g)
                 </td>
+                <td class="col-carbohydrates"><input type="number" value="0" class="pfm-readonly" disabled="disabled"></td>
+                <td class="col-lipids"><input type="number" value="0" class="pfm-readonly" disabled="disabled"></td>
+                <td class="col-energy_kcal"><input type="number" value="0" class="pfm-readonly" disabled="disabled"></td>
             </tr>
         </tbody>
     </table>
