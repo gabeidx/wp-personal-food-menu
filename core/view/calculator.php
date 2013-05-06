@@ -72,9 +72,9 @@ function pfm_calculator() {
                 <td class="col-quantity">
                     <input type="number" name="" id="" value="100" min="50" step="50" class="pfm-quantity-input"> (g)
                 </td>
-                <td class="col-carbohydrates"><input type="number" value="0" class="pfm-readonly" disabled="disabled"></td>
-                <td class="col-lipids"><input type="number" value="0" class="pfm-readonly" disabled="disabled"></td>
-                <td class="col-energy_kcal"><input type="number" value="0" class="pfm-readonly" disabled="disabled"></td>
+                <td class="col-carbohydrates"><input type="number" name="food[][carbohydrates]" value="0" class="pfm-readonly" disabled="disabled"></td>
+                <td class="col-lipids"><input type="number" name="food[][lipids]" value="0" class="pfm-readonly" disabled="disabled"></td>
+                <td class="col-energy_kcal"><input type="number" name="food[][energy_kcal]" value="0" class="pfm-readonly" disabled="disabled"></td>
             </tr>
         </tbody>
     </table>
