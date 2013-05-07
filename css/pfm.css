@@ -1,0 +1,39 @@
+.pfm_postbox {
+    float: left;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+    border-radius: 0;
+}
+.pfm_postbox .inside {
+    overflow: hidden;
+    padding: 0 10px !important;
+    margin: 0 !important;
+}
+.pfm_postbox .field {
+    float: left;
+    position: relative;
+    padding: 10px 0;
+    border-bottom: 1px solid #e8e8e8;
+    width: 33%;
+}
+.pfm_postbox .field p {
+    margin: 0 0 5px;
+}
+#postbox-container-1 {
+    float: right;
+    margin-right: -300px;
+    width: 280px !important;
+}
+#postbox-container-2 {
+    float: left;
+}
+#submitbox .button-primary {
+    width: 100%;
+}
+#shortcode-input {
+    padding: 3px 8px;
+    font-size: 1.7em;
+    line-height: 100%;
+    outline: 0;
+}
