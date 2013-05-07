@@ -35,8 +35,8 @@ function pfm_calculator() {
             <tr>
                 <th class="pfm-col-food">Alimento</th>
                 <th class="pfm-col-quantity">Quantidade</th>
-                <th class="pfm-col-carbohydrates">Carboidratos (g)</th>
-                <th class="pfm-col-lipids">Gordura (g)</th>
+                <th class="pfm-col-carbohydrates">Carboidratos</th>
+                <th class="pfm-col-lipids">Gordura</th>
                 <th class="pfm-col-energy_kcal">Kcal</th>
             </tr>
         </thead>
@@ -44,13 +44,13 @@ function pfm_calculator() {
             <tr>
                 <th class="pfm-col-food">Alimento</th>
                 <th class="pfm-col-quantity">Quantidade</th>
-                <th class="pfm-col-carbohydrates">Carboidratos (g)</th>
-                <th class="pfm-col-lipids">Gordura (g)</th>
+                <th class="pfm-col-carbohydrates">Carboidratos</th>
+                <th class="pfm-col-lipids">Gordura</th>
                 <th class="pfm-col-energy_kcal">Kcal</th>
             </tr>
-            <tr>
+            <!-- <tr>
                 <th align="right">Resultado:</th>
-            </tr>
+            </tr> -->
             <tr>
                 <td colspan="99"><input type="button" value="Adicionar" class="pfm-add-row"></td>
             </tr>
@@ -72,11 +72,11 @@ function pfm_calculator() {
                     </select>
                 </td>
                 <td class="col-quantity">
-                    <input type="number" name="" id="" value="100" min="50" step="50" class="pfm-input pfm-quantity-input"> (g)
+                    <input type="number" name="" id="" value="100" data-pfm-col="quantity" min="50" step="50" class="pfm-input pfm-quantity-input"> (g)
                 </td>
-                <td class="col-carbohydrates"><input type="number" name="food[][carbohydrates]" value="0" class="pfm-input pfm-readonly" disabled="disabled"></td>
-                <td class="col-lipids"><input type="number" name="food[][lipids]" value="0" class="pfm-input pfm-readonly" disabled="disabled"></td>
-                <td class="col-energy_kcal"><input type="number" name="food[][energy_kcal]" value="0" class="pfm-input pfm-readonly" disabled="disabled"></td>
+                <td class="col-carbohydrates"><input type="number" data-pfm-col="carbohydrates" value="0" class="pfm-input pfm-readonly"> (g)</td>
+                <td class="col-lipids"><input type="number" data-pfm-col="lipids" value="0" class="pfm-input pfm-readonly"> (g)</td>
+                <td class="col-energy_kcal"><input type="number" data-pfm-col="energy_kcal" value="0" class="pfm-input pfm-readonly"></td>
             </tr>
         </tbody>
     </table>
@@ -93,16 +93,18 @@ function pfm_calculator() {
  */
 function pfm_calculator_script($results = array()) {
     $script = '<script>'
-        . 'var PFM = PFM || {}'
+        . 'var PFM = PFM || {};'
         . 'PFM.foods = [];';
 
     foreach ($results as $category => $foods) :
         foreach ($foods as $food) :
-            $script .= 'PFM.foods['. $food['id'] .'] = {'
-                . 'carbohydrates : "'.      $food['carbohydrates'] .'",'
-                . 'lipids : "'.             $food['lipids'] .'",'
-                . 'energy_kcal : "'.        $food['energy_kcal'] .'"'
-                . '}';
+            $script .= 'PFM.foods['. $food['id'] .'] = {';
+            foreach ($food as $key => $value) {
+                $script .= $key . ' : "'. $value .'",';
+            }
+            // Remove last comma
+            $script = preg_replace('/,([^,]*)$/', '$1', $script);
+            $script .= '};';
         endforeach; // ^foods
     endforeach; // ^results
 
@@ -136,6 +138,7 @@ function pfm_get_food_options() {
         foreach ($results as $food) {
             $cat = $food['category'];
             unset($food['category']);
+            unset($food['pfm_category_id']);
             $foods[$cat][] = $food;
         }
     }

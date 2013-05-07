@@ -73,6 +73,7 @@ class Pfm {
         add_action( 'admin_menu', array($this, 'admin_menu') );
         add_action( 'admin_print_styles', array($this, 'admin_css'));
         add_action( 'wp_enqueue_scripts', array($this, 'plugin_css') );
+        add_action( 'wp_enqueue_scripts', array($this, 'plugin_scripts') );
 
         // Install
         $this->install();
@@ -120,6 +121,17 @@ class Pfm {
     public function plugin_css() {
         wp_register_style( 'pfm-calculator', plugins_url('css/pfm-calculator.css', dirname(__FILE__)), false, $this->version);
         wp_enqueue_style( 'pfm-calculator' );
+    }
+
+/**
+ * Plugin CSS
+ *
+ * @return void
+ */
+    public function plugin_scripts() {
+        wp_enqueue_script('jquery');
+        wp_register_script( 'pfm-calculator', plugins_url('js/pfm-calculator.js', dirname(__FILE__)), false, $this->version);
+        wp_enqueue_script( 'pfm-calculator' );
     }
 
 /**
