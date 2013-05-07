@@ -68,12 +68,27 @@ class Pfm {
         );
 
         // Actions
+        add_action( 'init', array($this, 'init') );
         add_action( 'admin_init', array($this, 'admin_init') );
         add_action( 'admin_menu', array($this, 'admin_menu') );
         add_action( 'admin_print_styles', array($this, 'admin_css'));
+        add_action( 'wp_enqueue_scripts', array($this, 'plugin_css') );
+        add_action( 'wp_enqueue_scripts', array($this, 'plugin_scripts') );
 
         // Install
         $this->install();
+    }
+
+/**
+ * Plugin init
+ *
+ * @return void
+ */
+    public function init() {
+        // Load calculator
+        $this->load('calculator.php', PFM_DIR . 'core' . DS . 'view');
+        // Shortcode
+        add_shortcode( 'pfm_calculator', 'pfm_calculator' );
     }
 
 /**
@@ -84,7 +99,6 @@ class Pfm {
     public function admin_init() {
         // Scripts
         wp_enqueue_script('jquery');
-
         // Views
         $this->load_admin_views();
     }
@@ -97,6 +111,27 @@ class Pfm {
     public function admin_css() {
         wp_register_style('pfm', plugins_url('css/pfm.css', dirname(__FILE__)), false, $this->version);
         wp_enqueue_style('pfm');
+    }
+
+/**
+ * Plugin CSS
+ *
+ * @return void
+ */
+    public function plugin_css() {
+        wp_register_style( 'pfm-calculator', plugins_url('css/pfm-calculator.css', dirname(__FILE__)), false, $this->version);
+        wp_enqueue_style( 'pfm-calculator' );
+    }
+
+/**
+ * Plugin CSS
+ *
+ * @return void
+ */
+    public function plugin_scripts() {
+        wp_enqueue_script('jquery');
+        wp_register_script( 'pfm-calculator', plugins_url('js/pfm-calculator.js', dirname(__FILE__)), false, $this->version);
+        wp_enqueue_script( 'pfm-calculator' );
     }
 
 /**
@@ -133,7 +168,7 @@ class Pfm {
  * @return void
  */
     public function load_admin_views() {
-        $this->loadFiles(null, PFM_DIR . 'core' . DS . 'view' . DS . 'admin');
+        $this->load(null, PFM_DIR . 'core' . DS . 'view' . DS . 'admin');
     }
 
 /**
@@ -195,10 +230,13 @@ class Pfm {
  * Load files specified by `$files` inside the path specified by `$path`. If `$files`
  * is null, load all files inside `$path`.
  *
- * @param mixed $files
+ * `$path` must not have a trailing slash.
+ *
+ * @param mixed  $files
+ * @param string $path
  * @return void
  */
-    public function loadFiles($files = null, $path = CORE) {
+    public function load($files = null, $path = PFM_DIR) {
         if ($files && !is_array($files)) {
             $files = array($files);
         } else if ($files == null) {
@@ -211,7 +249,6 @@ class Pfm {
                 }
             }
             closedir($dir);
-
         }
 
         foreach ($files as $file) {
