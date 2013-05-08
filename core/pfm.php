@@ -47,18 +47,21 @@ class Pfm {
             'name' => __('Personal Food Menu', 'pmf'),
             'admin' => array(
                 array(
+                    'parent_slug' => 'pfm_foods',
                     'title' => __('Add new', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pfm_add_food',
                     'function' => 'pfm_add_food',
                 ),
                 array(
+                    'parent_slug' => 'pfm_foods',
                     'title' => __('Categories', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pfm_categories',
                     'function' => 'pfm_categories',
                 ),
                 array(
+                    'parent_slug' => 'pfm_foods',
                     'title' => __('Shortcode', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pfm_shortcode',
@@ -162,7 +165,7 @@ class Pfm {
         // Add submenus
         foreach ($this->options['admin'] as $page) {
             add_submenu_page(
-                'pfm_foods',
+                $page['parent_slug'],
                 $page['title'],
                 $page['title'],
                 $page['capability'],

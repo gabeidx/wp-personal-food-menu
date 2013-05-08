@@ -29,6 +29,14 @@ function pfm_foods() {
     // Tables
     $table_foods      = $wpdb->prefix . 'pfm_foods';
     $table_categories = $wpdb->prefix . 'pfm_categories';
+
+    if ($_GET['action'] == 'delete' && !empty($_GET['food'])) {
+        $foodId = $_GET['food'];
+        if ($wpdb->query("DELETE FROM `$table_foods` WHERE `id` = '$foodId'"))
+            $message = __('Food deleted successfully', 'pfm');
+        else
+            $message = __('The food was not deleted', 'pfm');
+    }
     ?>
     <div class="wrap">
         <div class="icon32 icon-appearance"></div>
@@ -40,7 +48,7 @@ function pfm_foods() {
 
         <br class="clear">
 
-        <table class="wp-list-table widefat fixed tags">
+        <table id="pfm-list" class="wp-list-table widefat fixed tags">
             <thead>
                 <tr>
                     <th scope="col" id="cb" class="manage-column column-cb check-column" style="">
@@ -90,7 +98,7 @@ function pfm_foods() {
                         <strong><a class="row-title" href="admin.php?page=pfm_add_food&amp;action=edit&amp;food=<?php echo $food->id; ?>" title="Edit “<?php echo $food->name; ?>”"><?php echo $food->name; ?></a></strong><br>
                         <div class="row-actions">
                             <span class="inline hide-if-no-js"><a href="admin.php?page=pfm_add_food&amp;action=edit&amp;food=<?php echo $food->id; ?>" class="editinline"><?php _e('Edit'); ?></a> | </span>
-                            <span class="delete"><a class="delete-tag" href="admin.php?page=pfm_add_food&amp;action=delete&amp;food=<?php echo $food->id; ?>"><?php _e('Delete'); ?></a></span>
+                            <span class="delete"><a class="delete-tag" href="admin.php?page=pfm_foods&amp;action=delete&amp;food=<?php echo $food->id; ?>" data-message="<?php _e('Are you sure you want to delete \''. $food->name .'\'? ') ?>"><?php _e('Delete'); ?></a></span>
                         </div>
                     </td>
                     <td class="posts column-parent"><?php echo $food->energy_kcal; ?></td>
@@ -117,7 +125,7 @@ function pfm_foods() {
 }
 
 /**
- * Add food
+ * Add food page
  *
  * @return void
  */
@@ -129,11 +137,19 @@ function pfm_add_food() {
     $table_foods      = $wpdb->prefix . 'pfm_foods';
     $table_categories = $wpdb->prefix . 'pfm_categories';
 
+    // Delete action
+    if (!empty($_GET['action']) && $_GET['action'] === 'delete' && !empty($_GET['food'])) {
+        return 'lorem';
+        // return $wpdb->query($wpdb->prepare("DELETE FROM $table_foods WHERE `id` = %s", $_GET['food']));
+    }
+
     $isEdit       = false;
     $pageTitle    = __('Add new food', 'pfm');
     $foodId       = null;
     $categories   = $wpdb->get_results("SELECT * FROM `$table_categories` ORDER BY `name`");
 
+
+    // Add or edit acton
     if (!empty($_POST['food']))
         $message = pfm_save_food($_POST['food']);
 
