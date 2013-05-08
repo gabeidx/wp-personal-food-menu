@@ -98,8 +98,6 @@ class Pfm {
  * @return void
  */
     public function admin_init() {
-        // Scripts
-        wp_enqueue_script('jquery');
         // Views
         $this->load_admin_views();
     }
@@ -120,6 +118,7 @@ class Pfm {
  * @return void
  */
     public function admin_scripts() {
+        wp_enqueue_script('jquery');
         wp_register_script('pfm', plugins_url('js/pfm.js', dirname(__FILE__)), false, $this->version);
         wp_enqueue_script('pfm');
     }
