@@ -37,6 +37,8 @@ function pfm_calculator() {
                 <th class="pfm-col-quantity">Quantidade</th>
                 <th class="pfm-col-carbohydrates">Carboidratos</th>
                 <th class="pfm-col-lipids">Gordura</th>
+                <th class="pfm-col-protein">Proteínas</th>
+                <th class="pfm-col-fiber">Fibras</th>
                 <th class="pfm-col-energy_kcal">Kcal</th>
             </tr>
         </thead>
@@ -46,6 +48,8 @@ function pfm_calculator() {
                 <th class="pfm-col-quantity">Quantidade</th>
                 <th class="pfm-col-carbohydrates">Carboidratos</th>
                 <th class="pfm-col-lipids">Gordura</th>
+                <th class="pfm-col-protein">Proteínas</th>
+                <th class="pfm-col-fiber">Fibras</th>
                 <th class="pfm-col-energy_kcal">Kcal</th>
             </tr>
             <!-- <tr>
@@ -76,6 +80,8 @@ function pfm_calculator() {
                 </td>
                 <td class="col-carbohydrates"><input type="number" data-pfm-col="carbohydrates" value="0" class="pfm-input pfm-readonly" disabled="disabled"> (g)</td>
                 <td class="col-lipids"><input type="number" data-pfm-col="lipids" value="0" class="pfm-input pfm-readonly" disabled="disabled"> (g)</td>
+                <td class="col-protein"><input type="number" data-pfm-col="protein" value="0" class="pfm-input pfm-readonly" disabled="disabled"> (g)</td>
+                <td class="col-fiber"><input type="number" data-pfm-col="fiber" value="0" class="pfm-input pfm-readonly" disabled="disabled"> (g)</td>
                 <td class="col-energy_kcal"><input type="number" data-pfm-col="energy_kcal" value="0" class="pfm-input pfm-readonly" disabled="disabled"></td>
             </tr>
         </tbody>
