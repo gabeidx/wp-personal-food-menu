@@ -47,18 +47,21 @@ class Pfm {
             'name' => __('Personal Food Menu', 'pmf'),
             'admin' => array(
                 array(
+                    'parent_slug' => 'pfm_foods',
                     'title' => __('Add new', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pfm_add_food',
                     'function' => 'pfm_add_food',
                 ),
                 array(
+                    'parent_slug' => 'pfm_foods',
                     'title' => __('Categories', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pfm_categories',
                     'function' => 'pfm_categories',
                 ),
                 array(
+                    'parent_slug' => 'pfm_foods',
                     'title' => __('Shortcode', 'pfm'),
                     'capability' => 'manage_options',
                     'menu_slug' => 'pfm_shortcode',
@@ -72,6 +75,7 @@ class Pfm {
         add_action( 'admin_init', array($this, 'admin_init') );
         add_action( 'admin_menu', array($this, 'admin_menu') );
         add_action( 'admin_print_styles', array($this, 'admin_css'));
+        add_action( 'admin_enqueue_scripts', array($this, 'admin_scripts') );
         add_action( 'wp_enqueue_scripts', array($this, 'plugin_css') );
         add_action( 'wp_enqueue_scripts', array($this, 'plugin_scripts') );
 
@@ -97,8 +101,6 @@ class Pfm {
  * @return void
  */
     public function admin_init() {
-        // Scripts
-        wp_enqueue_script('jquery');
         // Views
         $this->load_admin_views();
     }
@@ -114,6 +116,17 @@ class Pfm {
     }
 
 /**
+ * Admin Scripts
+ *
+ * @return void
+ */
+    public function admin_scripts() {
+        wp_enqueue_script('jquery');
+        wp_register_script('pfm', plugins_url('js/pfm.js', dirname(__FILE__)), false, $this->version);
+        wp_enqueue_script('pfm');
+    }
+
+/**
  * Plugin CSS
  *
  * @return void
@@ -124,7 +137,7 @@ class Pfm {
     }
 
 /**
- * Plugin CSS
+ * Plugin Scripts
  *
  * @return void
  */
@@ -152,7 +165,7 @@ class Pfm {
         // Add submenus
         foreach ($this->options['admin'] as $page) {
             add_submenu_page(
-                'pfm_foods',
+                $page['parent_slug'],
                 $page['title'],
                 $page['title'],
                 $page['capability'],
