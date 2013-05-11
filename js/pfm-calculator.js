@@ -11,11 +11,15 @@ var PFM = PFM || {}
             quantity = scope.find('input[data-pfm-col="quantity"]').val() / 100,
             carbs = parseFloat(PFM.foods[index].carbohydrates.replace(',', '.')),
             lipids = parseFloat(PFM.foods[index].lipids.replace(',', '.')),
+            protein = parseFloat(PFM.foods[index].protein.replace(',', '.')),
+            fiber = parseFloat(PFM.foods[index].fiber.replace(',', '.')),
             kcal = parseFloat(PFM.foods[index].energy_kcal.replace(',', '.')),
             food = PFM.foods[index];
 
         scope.find('input[data-pfm-col="carbohydrates"]').val(carbs * quantity);
         scope.find('input[data-pfm-col="lipids"]').val(lipids * quantity);
+        scope.find('input[data-pfm-col="protein"]').val(protein * quantity);
+        scope.find('input[data-pfm-col="fiber"]').val(fiber * quantity);
         scope.find('input[data-pfm-col="energy_kcal"]').val(kcal * quantity);
     })
     // Add button
